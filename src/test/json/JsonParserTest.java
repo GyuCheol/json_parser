@@ -15,7 +15,7 @@ class JsonParserTest {
 
     @Test
     void parse_number_array() {
-        String json = "[1, 2, 3, 4]";
+        String json = "\t\t\t    \n\r\r[1, 2, 3, 4]";
         ByteArrayInputStream is = new ByteArrayInputStream(json.getBytes(utf8));
         JsonParser parser = new JsonParser(utf8);
 

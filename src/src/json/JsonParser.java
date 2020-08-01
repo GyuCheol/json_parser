@@ -1,7 +1,6 @@
 package json;
 
 import json.obj.JsonValue;
-import json.task.JsonTask;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,22 +47,6 @@ public class JsonParser {
     }
 
     public JsonValue parse(InputStream in) throws IOException {
-        Stack<JsonTask> taskStack = new Stack<>();
-        Stack<JsonValue> jsonStack = new Stack<>();
-        String json = getString(in);
-        JsonValue root = null;
-        int pos = 0;
-
-        taskStack.add(JsonTask.getFindSymbolTask());
-
-        while (taskStack.isEmpty() == false) {
-            JsonTask task = taskStack.pop();
-
-            
-            task.doTask(json, pos);
-
-        }
-
-        return root;
+        return JsonValue.parseJsonValue(getString(in), 0);
     }
 }
