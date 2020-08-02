@@ -1,5 +1,7 @@
 package json;
 
+import json.exceptions.JsonException;
+import json.exceptions.JsonExceptionType;
 import json.obj.JsonValue;
 
 import java.io.IOException;
@@ -7,7 +9,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.Stack;
 
 public class JsonParser {
     private final int BUFFER_SIZE;
@@ -46,7 +47,11 @@ public class JsonParser {
         return sb.toString();
     }
 
-    public JsonValue parse(InputStream in) throws IOException {
-        return JsonValue.parseJsonValue(getString(in), 0);
+    public JsonValue parse(InputStream in) throws JsonException {
+        try {
+            return JsonValue.parse(new JsonStringIterator(getString(in)));
+        } catch(IOException exception) {
+            throw new JsonException(JsonExceptionType.IO_EXCEPTION, 0);
+        }
     }
 }

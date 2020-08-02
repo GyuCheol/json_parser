@@ -1,61 +1,68 @@
 package json.obj;
 
-public abstract class JsonValue {
+import json.JsonStringIterator;
+import json.exceptions.JsonException;
+import json.exceptions.JsonExceptionType;
 
-    public JsonValue() {
-    }
+public abstract class JsonValue {
 
     public abstract String toString();
 
-    public static JsonArray parseJsonArray(String json, int start) {
-        JsonArray jsonArray = new JsonArray();
+    public abstract int size();
 
-        return jsonArray;
+
+    public static JsonValue parse(JsonStringIterator si) {
+        return parse(si, false, '\0');
     }
 
-    public static JsonObject parseJsonObject(String json, int start) {
-        return null;
-    }
+    public static JsonValue parse(JsonStringIterator si, boolean comma, char allowed) throws JsonException {
 
-    public static JsonValue parseJsonValue(String json, int start) {
+        si.skipWhiteSpaces();
 
-        for (int i = start; i < json.length(); i++) {
-            char tmp = json.charAt(i);
+        JsonValue jsonValue;
 
-            // 화이트 스페이스 무시하고, symbol 찾기
-            switch(tmp) {
-                case ' ':
-                case '\r':
-                case '\t':
-                case '\n':
-                    continue;
-            }
-
-            switch(tmp) {
-                case '[':
-                    return parseJsonArray(json, start);
-                case '{':
-                    return parseJsonObject(json, start);
-                case 'n':
-                    // null
-                    break;
-                case 't':
-                    // True
-                    break;
-                case 'f':
-                    // False
-                    break;
-                case '"':
-                case '\'':
-                    // String
-                    break;
-                default:
-                    // check the number
-            }
-
+        switch(si.current()) {
+            case '[':
+                jsonValue = JsonArray.parse(si);
+                break;
+            case '{':
+                jsonValue = JsonObject.parse(si);
+                break;
+            case 'n':
+                // null
+                jsonValue = JsonStaticValue.parse(JsonExceptionType.WRONG_NULL_FORMAT, JsonNull.instance, si);
+                break;
+            case 't':
+                // True
+                jsonValue = JsonStaticValue.parse(JsonExceptionType.WRONG_TRUE_FORMAT, JsonTrue.instance, si);
+                break;
+            case 'f':
+                // False
+                jsonValue = JsonStaticValue.parse(JsonExceptionType.WRONG_FALSE_FORMAT, JsonFalse.instance, si);
+                break;
+            case '"':
+            case '\'':
+                jsonValue = JsonString.parse(si);
+                break;
+            default:
+                // check the number
+                jsonValue = JsonNumber.parse(si);
+                break;
         }
 
-        return null;
+        si.skipWhiteSpaces();
+
+        if (si.hasNext()) {
+            char last = si.current();
+
+            if (comma && (last == ',' || last == allowed)) {
+                return jsonValue;
+            } else {
+                throw new JsonException(JsonExceptionType.UNKNOWN_CHAR, si.getPos());
+            }
+        }
+
+        return jsonValue;
     }
 
 }
