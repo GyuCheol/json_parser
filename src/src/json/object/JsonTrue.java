@@ -1,4 +1,4 @@
-package json.obj;
+package json.object;
 
 public class JsonTrue extends JsonStaticValue {
     public static final JsonTrue instance = new JsonTrue();

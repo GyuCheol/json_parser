@@ -1,8 +1,8 @@
 package json;
 
-import json.exceptions.JsonException;
-import json.exceptions.JsonExceptionType;
-import json.obj.JsonValue;
+import json.exception.JsonException;
+import json.exception.JsonExceptionType;
+import json.object.JsonValue;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,11 +47,16 @@ public class JsonParser {
         return sb.toString();
     }
 
-    public JsonValue parse(InputStream in) throws JsonException {
+    public <T extends JsonValue> T parse(InputStream in) throws JsonException {
         try {
-            return JsonValue.parse(new JsonStringIterator(getString(in)));
+            return parse(getString(in));
         } catch(IOException exception) {
             throw new JsonException(JsonExceptionType.IO_EXCEPTION, 0);
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends JsonValue> T parse(String str) throws JsonException {
+        return (T) JsonValue.parse(new JsonStringIterator(str));
     }
 }

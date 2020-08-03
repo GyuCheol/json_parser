@@ -1,13 +1,12 @@
-package json.obj;
+package json.object;
 
 import json.JsonStringIterator;
 
-public class JsonString extends JsonValue {
-
+public class JsonObject extends JsonValue {
 
     @Override
     public String toString() {
-        return null;
+        return "";
     }
 
     @Override
@@ -15,8 +14,7 @@ public class JsonString extends JsonValue {
         return 0;
     }
 
-    public static JsonString parse(JsonStringIterator si) {
+    public static JsonObject parse(JsonStringIterator si) {
         return null;
     }
-
 }

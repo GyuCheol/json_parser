@@ -1,6 +1,4 @@
-package json.obj;
-
-import json.exceptions.JsonExceptionType;
+package json.object;
 
 public class JsonNull extends JsonStaticValue {
     public static final JsonNull instance = new JsonNull();

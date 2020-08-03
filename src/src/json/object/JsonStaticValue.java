@@ -1,8 +1,8 @@
-package json.obj;
+package json.object;
 
 import json.JsonStringIterator;
-import json.exceptions.JsonException;
-import json.exceptions.JsonExceptionType;
+import json.exception.JsonException;
+import json.exception.JsonExceptionType;
 
 public abstract class JsonStaticValue extends JsonValue {
 
@@ -17,15 +17,15 @@ public abstract class JsonStaticValue extends JsonValue {
     public boolean match(JsonStringIterator si) {
 
         for (int i = 0; i < size(); i++) {
+            if (!si.hasNext()) {
+                return false;
+            }
+
             if (si.current() != toString().charAt(i)) {
                 return false;
             }
 
-            if (si.hasNext()) {
-                si.next();
-            } else {
-                return false;
-            }
+            si.next();
         }
 
         return true;

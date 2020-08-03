@@ -1,8 +1,8 @@
-package json.obj;
+package json.object;
 
 import json.JsonStringIterator;
-import json.exceptions.JsonException;
-import json.exceptions.JsonExceptionType;
+import json.exception.JsonException;
+import json.exception.JsonExceptionType;
 
 import java.util.ArrayList;
 
@@ -17,6 +17,10 @@ public class JsonArray extends JsonValue {
         jsonValues.remove(jsonValue);
     }
 
+    public JsonValue getJsonItem(int index) {
+        return jsonValues.get(index);
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(size());
@@ -25,11 +29,11 @@ public class JsonArray extends JsonValue {
 
         for (JsonValue json: jsonValues) {
             sb.append(json.toString());
-            sb.append(',');
+            sb.append(", ");
         }
         
         // 마지막 , 제거
-        sb.setLength(sb.length() - 1);
+        sb.setLength(sb.length() - 2);
         sb.append(']');
 
         return sb.toString();
@@ -75,7 +79,7 @@ public class JsonArray extends JsonValue {
         }
 
         if (!isFinished) {
-            throw new JsonException(JsonExceptionType.NOT_FINISHED_ARRAY_FORMAT, si.getPos());
+            throw new JsonException(JsonExceptionType.NOT_FINISHED_ARRAY, si.getPos());
         }
 
         return jsonArray;

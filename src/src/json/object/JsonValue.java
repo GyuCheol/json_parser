@@ -1,8 +1,8 @@
-package json.obj;
+package json.object;
 
 import json.JsonStringIterator;
-import json.exceptions.JsonException;
-import json.exceptions.JsonExceptionType;
+import json.exception.JsonException;
+import json.exception.JsonExceptionType;
 
 public abstract class JsonValue {
 
@@ -44,10 +44,24 @@ public abstract class JsonValue {
             case '\'':
                 jsonValue = JsonString.parse(si);
                 break;
-            default:
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+            case '+':
+            case '-':
+            case '.':
                 // check the number
                 jsonValue = JsonNumber.parse(si);
                 break;
+            default:
+                throw new JsonException(JsonExceptionType.UNKNOWN_TOKEN, si.getPos());
         }
 
         si.skipWhiteSpaces();
