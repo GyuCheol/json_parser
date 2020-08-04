@@ -8,14 +8,11 @@ public abstract class JsonValue {
 
     public abstract String toString();
 
-    public abstract int size();
-
-
     public static JsonValue parse(JsonStringIterator si) {
-        return parse(si, false, '\0');
+        return parse(si, false);
     }
 
-    public static JsonValue parse(JsonStringIterator si, boolean comma, char allowed) throws JsonException {
+    public static JsonValue parse(JsonStringIterator si, boolean isIncluded) throws JsonException {
 
         si.skipWhiteSpaces();
 
@@ -64,12 +61,12 @@ public abstract class JsonValue {
                 throw new JsonException(JsonExceptionType.UNKNOWN_TOKEN, si.getPos());
         }
 
-        si.skipWhiteSpaces();
 
-        if (si.hasNext()) {
-            char last = si.current();
+        // 독립적인 요소라면 whitespace로 종결 되어야 한다.
+        if (!isIncluded) {
+            si.skipWhiteSpaces();
 
-            if (comma && (last == ',' || last == allowed)) {
+            if (!si.hasNext()) {
                 return jsonValue;
             } else {
                 throw new JsonException(JsonExceptionType.UNKNOWN_CHAR, si.getPos());

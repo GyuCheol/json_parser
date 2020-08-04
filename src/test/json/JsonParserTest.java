@@ -5,9 +5,6 @@ import json.object.*;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
@@ -163,18 +160,36 @@ class JsonParserTest {
     }
 
     @Test
-    void parse_for_huge_file() {
-        // JsonObject 구현 이후 테스트!
+    void parse_object_1() {
+        String json1 = "{ 'A': 1 }";
+        String json2 = "{ 'A': 1, 'B': true, 'C': false, 'D': null, 'E': [1, 2, 3, 4] }";
+        String json3 = "{ 'AASDAS': 11231, 'B': [1, 2, 3]}";
 
+        JsonObject obj1 = parser.parse(json1);
+        JsonObject obj2 = parser.parse(json2);
+        JsonObject obj3 = parser.parse(json3);
+    }
+
+    @Test
+    void parse_object_2_with_exceptions() {
+        String json1 = "{ 'A': 1";
+        String json2 = "{ 'A': , 'B': true, 'C': false, 'D': null, 'E': [1, 2, 3, 4] }";
+        String json3 = "{'A'}";
+        String json4 = "{'A' : 29292ZXCZ}";
+        String json5 = "{'A   }";
+
+        assertThrows(JsonException.class, () -> parser.parse(json1));
+        assertThrows(JsonException.class, () -> parser.parse(json2));
+        assertThrows(JsonException.class, () -> parser.parse(json3));
+        assertThrows(JsonException.class, () -> parser.parse(json4));
+        assertThrows(JsonException.class, () -> parser.parse(json5));
+    }
+
+    @Test
+    void parse_for_huge_file() throws Exception {
         try (FileInputStream is = new FileInputStream("../sample/generated.json")) {
-            // JsonArray ary = parser.parse(is);
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException exception) {
-            exception.printStackTrace();
+            assertDoesNotThrow(() -> parser.parse(is));
         }
-
     }
 
 }

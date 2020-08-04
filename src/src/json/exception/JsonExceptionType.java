@@ -9,8 +9,10 @@ public enum JsonExceptionType {
     IO_EXCEPTION("Occurred an IO exception"),
     WRONG_TRUE_FORMAT("Occurred a wrong true format (It should be 'true')"),
     WRONG_FALSE_FORMAT("Occurred a wrong false format (It should be 'false')"),
-    NOT_FINISHED_ARRAY("Could not found the end of array"),
-    NOT_FINISHED_STRING("Could not found the pair of delimiters");
+    NOT_FINISHED_ARRAY("Could not found the end of array ']'"),
+    NOT_FINISHED_OBJECT("Could not found the end of object '}'"),
+    NOT_FOUND_COLON("Expected ':' but another char was found"),
+    NOT_FINISHED_STRING("Could not found the pair of delimiters \" or '");
 
     private final String msg;
 

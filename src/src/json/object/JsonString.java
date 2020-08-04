@@ -48,8 +48,18 @@ public class JsonString extends JsonValue {
     }
 
     @Override
-    public int size() {
-        return this.string.length();
+    public int hashCode() {
+        return string.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (obj instanceof JsonString) {
+            return this.string.equals(((JsonString)obj).string);
+        }
+
+        return false;
     }
 
     public static String parseJsonString(JsonStringIterator si) {

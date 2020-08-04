@@ -23,7 +23,7 @@ public class JsonArray extends JsonValue {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder(size());
+        StringBuilder sb = new StringBuilder();
 
         sb.append('[');
 
@@ -39,42 +39,42 @@ public class JsonArray extends JsonValue {
         return sb.toString();
     }
 
-    @Override
-    public int size() {
-        int size = 2; // []
-
-        for (JsonValue json: jsonValues) {
-            size += json.size();
-        }
-
-        // comma는 json 개수 - 1개 만큼 있다.
-        size += jsonValues.size() - 1;
-
-        return size;
-    }
-
     public static JsonArray parse(JsonStringIterator si) {
         JsonArray jsonArray = new JsonArray();
         boolean isFinished = false;
 
         si.next();
+        si.skipWhiteSpaces();
 
+        // 아무 요소 없다면 바로 리턴
+        if (si.current() == ']') {
+            return jsonArray;
+        }
+
+        si_loop:
         while (si.hasNext()) {
+
+            JsonValue item = JsonValue.parse(si, true);
+
+            jsonArray.addJsonValue(item);
+
             si.skipWhiteSpaces();
-            char tmp = si.current();
 
-            if (tmp == ',') {
-                // 추가 요소 발견
-                si.next();
-            } else if (tmp == ']') {
-                // 배열의 끝
-                si.next();
-                isFinished = true;
+            if (!si.hasNext()) {
                 break;
-            } else {
-                JsonValue item = JsonValue.parse(si, true, ']');
+            }
 
-                jsonArray.addJsonValue(item);
+            switch (si.current()) {
+                case ',':
+                    si.next();
+                    si.skipWhiteSpaces();
+                    break;
+                case ']':
+                    si.next();
+                    isFinished = true;
+                    break si_loop;
+                default:
+                    throw new JsonException(JsonExceptionType.UNKNOWN_TOKEN, si.getPos());
             }
         }
 

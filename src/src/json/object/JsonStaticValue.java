@@ -9,14 +9,10 @@ public abstract class JsonStaticValue extends JsonValue {
     @Override
     public abstract String toString();
 
-    @Override
-    public int size() {
-        return toString().length();
-    }
-
     public boolean match(JsonStringIterator si) {
+        int size = toString().length();
 
-        for (int i = 0; i < size(); i++) {
+        for (int i = 0; i < size; i++) {
             if (!si.hasNext()) {
                 return false;
             }

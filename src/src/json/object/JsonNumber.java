@@ -10,6 +10,7 @@ public class JsonNumber extends JsonValue {
 
     BigDecimal decimal;
     String str;
+
     @Override
     public String toString() {
         return str;
@@ -18,11 +19,6 @@ public class JsonNumber extends JsonValue {
     public JsonNumber(BigDecimal decimal) {
         this.decimal = decimal;
         this.str = decimal.toString();
-    }
-
-    @Override
-    public int size() {
-        return str.length();
     }
 
     public static JsonNumber parse(JsonStringIterator si) {
@@ -56,4 +52,18 @@ public class JsonNumber extends JsonValue {
         }
     }
 
+    @Override
+    public int hashCode() {
+        return this.decimal.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (obj instanceof JsonNumber) {
+            return this.decimal.equals(((JsonNumber)obj).decimal);
+        }
+
+        return false;
+    }
 }
