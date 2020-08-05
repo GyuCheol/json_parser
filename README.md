@@ -1,6 +1,6 @@
 # Java Json Parser Project
 
-- Purpose : studying to know json architecture and parsing algorithm (only myself without any logic supports but using standard library like ArrayList)
+- Purpose : studying to know json architecture and parsing algorithm (without any logical supports but it used standard library like ArrayList)
 - Language : Java
 - Performance : 
 
