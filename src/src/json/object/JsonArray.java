@@ -1,6 +1,7 @@
 package json.object;
 
-import json.JsonStringIterator;
+import json.iterator.JsonIterator;
+import json.iterator.JsonStringIterator;
 import json.exception.JsonException;
 import json.exception.JsonExceptionType;
 
@@ -39,7 +40,7 @@ public class JsonArray extends JsonValue {
         return sb.toString();
     }
 
-    public static JsonArray parse(JsonStringIterator si) {
+    public static JsonArray parse(JsonIterator si) {
         JsonArray jsonArray = new JsonArray();
         boolean isFinished = false;
 

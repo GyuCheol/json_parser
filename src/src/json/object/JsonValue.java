@@ -1,6 +1,6 @@
 package json.object;
 
-import json.JsonStringIterator;
+import json.iterator.JsonIterator;
 import json.exception.JsonException;
 import json.exception.JsonExceptionType;
 
@@ -8,11 +8,11 @@ public abstract class JsonValue {
 
     public abstract String toString();
 
-    public static JsonValue parse(JsonStringIterator si) {
+    public static JsonValue parse(JsonIterator si) {
         return parse(si, false);
     }
 
-    public static JsonValue parse(JsonStringIterator si, boolean isIncluded) throws JsonException {
+    public static JsonValue parse(JsonIterator si, boolean isIncluded) throws JsonException {
 
         si.skipWhiteSpaces();
 
@@ -20,25 +20,16 @@ public abstract class JsonValue {
 
         switch(si.current()) {
             case '[':
+                // check number
                 jsonValue = JsonArray.parse(si);
                 break;
             case '{':
+                // check number
                 jsonValue = JsonObject.parse(si);
-                break;
-            case 'n':
-                // null
-                jsonValue = JsonStaticValue.parse(JsonExceptionType.WRONG_NULL_FORMAT, JsonNull.instance, si);
-                break;
-            case 't':
-                // True
-                jsonValue = JsonStaticValue.parse(JsonExceptionType.WRONG_TRUE_FORMAT, JsonTrue.instance, si);
-                break;
-            case 'f':
-                // False
-                jsonValue = JsonStaticValue.parse(JsonExceptionType.WRONG_FALSE_FORMAT, JsonFalse.instance, si);
                 break;
             case '"':
             case '\'':
+                // check number
                 jsonValue = JsonString.parse(si);
                 break;
             case '0':
@@ -54,15 +45,20 @@ public abstract class JsonValue {
             case '+':
             case '-':
             case '.':
-                // check the number
+                // check number
                 jsonValue = JsonNumber.parse(si);
+                break;
+            case 'n':
+            case 't':
+            case 'f':
+                // check the type of null, true, false (for static instances)
+                jsonValue = JsonStaticValue.parse(si);
                 break;
             default:
                 throw new JsonException(JsonExceptionType.UNKNOWN_TOKEN, si.getPos());
         }
 
-
-        // 독립적인 요소라면 whitespace로 종결 되어야 한다.
+        // obj나 ary에 포함된 요소가 아니라면 다른 token 없이 whitespace로 종결 되어야 한다.
         if (!isIncluded) {
             si.skipWhiteSpaces();
 

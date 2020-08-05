@@ -12,7 +12,8 @@ public enum JsonExceptionType {
     NOT_FINISHED_ARRAY("Could not found the end of array ']'"),
     NOT_FINISHED_OBJECT("Could not found the end of object '}'"),
     NOT_FOUND_COLON("Expected ':' but another char was found"),
-    NOT_FINISHED_STRING("Could not found the pair of delimiters \" or '");
+    NOT_FINISHED_STRING("Could not found the pair of delimiters \" or '"),
+    PARSING_IO_EXCEPTION("Check the stream's status");
 
     private final String msg;
 

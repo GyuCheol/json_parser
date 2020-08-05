@@ -1,6 +1,7 @@
 package json.object;
 
-import json.JsonStringIterator;
+import json.iterator.JsonIterator;
+import json.iterator.JsonStringIterator;
 import json.exception.JsonException;
 import json.exception.JsonExceptionType;
 
@@ -21,7 +22,7 @@ public class JsonNumber extends JsonValue {
         this.str = decimal.toString();
     }
 
-    public static JsonNumber parse(JsonStringIterator si) {
+    public static JsonNumber parse(JsonIterator si) {
         // Number 가능한 포맷
         // 12389123 정수
         // 1231.1232 실수

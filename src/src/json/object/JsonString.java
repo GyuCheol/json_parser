@@ -1,6 +1,7 @@
 package json.object;
 
-import json.JsonStringIterator;
+import json.iterator.JsonIterator;
+import json.iterator.JsonStringIterator;
 import json.exception.JsonException;
 import json.exception.JsonExceptionType;
 
@@ -62,7 +63,7 @@ public class JsonString extends JsonValue {
         return false;
     }
 
-    public static String parseJsonString(JsonStringIterator si) {
+    public static String parseJsonString(JsonIterator si) {
         StringBuilder sb = new StringBuilder();
 
         boolean isFinished = false;
@@ -102,7 +103,7 @@ public class JsonString extends JsonValue {
         return sb.toString();
     }
 
-    public static JsonString parse(JsonStringIterator si) {
+    public static JsonString parse(JsonIterator si) {
         return new JsonString(parseJsonString(si));
     }
 

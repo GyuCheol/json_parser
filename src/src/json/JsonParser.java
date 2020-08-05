@@ -2,6 +2,8 @@ package json;
 
 import json.exception.JsonException;
 import json.exception.JsonExceptionType;
+import json.iterator.JsonStreamIterator;
+import json.iterator.JsonStringIterator;
 import json.object.JsonValue;
 
 import java.io.IOException;
@@ -11,7 +13,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public class JsonParser {
-    private final int BUFFER_SIZE;
+    private final int bufferSize;
     private Charset charset;
     private int pos = 0;
 
@@ -27,31 +29,16 @@ public class JsonParser {
     }
 
     public JsonParser(Charset charset, int bufferSize) {
-        this.BUFFER_SIZE = bufferSize;
+        this.bufferSize = bufferSize;
         this.charset = charset;
     }
 
-    private String getString(InputStream in) throws IOException {
-        InputStreamReader reader = new InputStreamReader(in, charset);
-        StringBuilder sb = new StringBuilder(BUFFER_SIZE * 2);
-        char[] buffer = new char[BUFFER_SIZE];
-        int offset = 0;
-        int read = reader.read(buffer, offset, BUFFER_SIZE);
-
-        while (read > 0) {
-            sb.append(buffer, 0, read);
-            offset += read;
-            read = reader.read(buffer);
-        }
-
-        return sb.toString();
-    }
-
+    @SuppressWarnings("unchecked")
     public <T extends JsonValue> T parse(InputStream in) throws JsonException {
         try {
-            return parse(getString(in));
-        } catch(IOException exception) {
-            throw new JsonException(JsonExceptionType.IO_EXCEPTION, 0);
+            return (T) JsonValue.parse(new JsonStreamIterator(new InputStreamReader(in, charset), bufferSize));
+        } catch (IOException exception) {
+            throw new JsonException(JsonExceptionType.PARSING_IO_EXCEPTION, 0);
         }
     }
 

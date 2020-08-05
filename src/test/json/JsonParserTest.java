@@ -192,4 +192,11 @@ class JsonParserTest {
         }
     }
 
+    @Test
+    void parse_for_low_file() throws Exception {
+        try (FileInputStream is = new FileInputStream("../sample/low_size.json")) {
+            assertDoesNotThrow(() -> parser.parse(is));
+        }
+    }
+
 }

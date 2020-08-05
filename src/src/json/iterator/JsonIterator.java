@@ -1,31 +1,18 @@
-package json;
+package json.iterator;
 
-public class JsonStringIterator {
-    private String string;
-    private int pos = 0;
-
-    public JsonStringIterator(String string) {
-        this.string = string;
-    }
-
-    public int length() {
-        return string.length();
-    }
-
-    public boolean hasNext() {
-        return pos < this.string.length();
-    }
-
-    public int getPos() {
-        return this.pos;
-    }
-
-    public char current() {
-        return this.string.charAt(pos);
-    }
+public abstract class JsonIterator {
+    protected int pos = 0;
 
     public void next() {
         ++pos;
+    }
+
+    public abstract char current();
+
+    public abstract boolean hasNext();
+
+    public int getPos() {
+        return this.pos;
     }
 
     public boolean isWhiteSpace() {
@@ -56,4 +43,5 @@ public class JsonStringIterator {
             return;
         }
     }
+
 }

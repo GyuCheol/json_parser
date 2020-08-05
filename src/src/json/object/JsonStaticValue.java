@@ -1,6 +1,8 @@
 package json.object;
 
-import json.JsonStringIterator;
+import json.iterator.JsonIterator;
+import json.iterator.JsonStreamIterator;
+import json.iterator.JsonStringIterator;
 import json.exception.JsonException;
 import json.exception.JsonExceptionType;
 
@@ -9,7 +11,7 @@ public abstract class JsonStaticValue extends JsonValue {
     @Override
     public abstract String toString();
 
-    public boolean match(JsonStringIterator si) {
+    private boolean match(JsonIterator si) {
         int size = toString().length();
 
         for (int i = 0; i < size; i++) {
@@ -27,13 +29,32 @@ public abstract class JsonStaticValue extends JsonValue {
         return true;
     }
 
-    public static JsonStaticValue parse(JsonExceptionType type, JsonStaticValue instance, JsonStringIterator si) {
+    public static JsonStaticValue parse(JsonIterator si) {
+        JsonStaticValue staticValue;
+        JsonExceptionType exceptionType;
 
-        if (!instance.match(si)) {
-            throw new JsonException(type, si.getPos());
+        switch (si.current()) {
+            case 'n':
+                staticValue = JsonNull.instance;
+                exceptionType = JsonExceptionType.WRONG_TRUE_FORMAT;
+                break;
+            case 't':
+                staticValue = JsonTrue.instance;
+                exceptionType = JsonExceptionType.WRONG_TRUE_FORMAT;
+                break;
+            case 'f':
+                staticValue = JsonFalse.instance;
+                exceptionType = JsonExceptionType.WRONG_FALSE_FORMAT;
+                break;
+            default:
+                throw new JsonException(JsonExceptionType.UNKNOWN_TOKEN, si.getPos());
         }
 
-        return instance;
+        if (!staticValue.match(si)) {
+            throw new JsonException(exceptionType, si.getPos());
+        }
+
+        return staticValue;
     }
 
 }
