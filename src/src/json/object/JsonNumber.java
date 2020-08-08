@@ -7,10 +7,10 @@ import json.exception.JsonExceptionType;
 
 import java.math.BigDecimal;
 
-public class JsonNumber extends JsonValue {
+public class JsonNumber extends JsonValue implements Comparable<JsonNumber> {
 
-    BigDecimal decimal;
-    String str;
+    private BigDecimal decimal;
+    private String str;
 
     @Override
     public String toString() {
@@ -66,5 +66,10 @@ public class JsonNumber extends JsonValue {
         }
 
         return false;
+    }
+
+    @Override
+    public int compareTo(JsonNumber o) {
+        return this.decimal.compareTo(o.decimal);
     }
 }

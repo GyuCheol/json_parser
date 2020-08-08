@@ -5,21 +5,145 @@ import json.iterator.JsonStringIterator;
 import json.exception.JsonException;
 import json.exception.JsonExceptionType;
 
-import java.util.ArrayList;
+import java.util.*;
+import java.util.function.UnaryOperator;
 
-public class JsonArray extends JsonValue {
+public class JsonArray extends JsonValue implements List<JsonValue> {
     private ArrayList<JsonValue> jsonValues = new ArrayList<>();
 
-    public void addJsonValue(JsonValue jsonValue) {
-        jsonValues.add(jsonValue);
+    @Override
+    public List<JsonValue> subList(int fromIndex, int toIndex) {
+        return jsonValues.subList(fromIndex, toIndex);
     }
 
-    public void removeJsonValue(JsonValue jsonValue) {
-        jsonValues.remove(jsonValue);
+    @Override
+    public Spliterator<JsonValue> spliterator() {
+        return jsonValues.spliterator();
     }
 
-    public JsonValue getJsonItem(int index) {
+    @Override
+    public void replaceAll(UnaryOperator<JsonValue> operator) {
+        jsonValues.replaceAll(operator);
+    }
+
+    public int size() {
+        return this.jsonValues.size();
+    }
+
+    @Override
+    public ListIterator<JsonValue> listIterator(int index) {
+        return jsonValues.listIterator(index);
+    }
+
+    @Override
+    public ListIterator<JsonValue> listIterator() {
+        return jsonValues.listIterator();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return jsonValues.isEmpty();
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        return false;
+    }
+
+    @Override
+    public int indexOf(Object o) {
+        return jsonValues.indexOf(o);
+    }
+
+    @Override
+    public int lastIndexOf(Object o) {
+        return jsonValues.lastIndexOf(o);
+    }
+
+    @Override
+    public Iterator<JsonValue> iterator() {
+        return this.jsonValues.iterator();
+    }
+
+    @Override
+    public void sort(Comparator<? super JsonValue> c) {
+        jsonValues.sort(c);
+    }
+
+    @Override
+    public Object[] toArray() {
+        return this.jsonValues.toArray();
+    }
+
+    @Override
+    public <T> T[] toArray(T[] a) {
+        return this.jsonValues.toArray(a);
+    }
+
+    @Override
+    public JsonValue get(int index) {
         return jsonValues.get(index);
+    }
+
+    @Override
+    public JsonValue set(int index, JsonValue element) {
+        return jsonValues.set(index, element);
+    }
+
+    @Override
+    public boolean add(JsonValue jsonValue) {
+        return this.jsonValues.add(jsonValue);
+    }
+
+    @Override
+    public void add(int index, JsonValue element) {
+        jsonValues.add(index, element);
+    }
+
+    @Override
+    public JsonValue remove(int index) {
+        return jsonValues.remove(index);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return jsonValues.equals(o);
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        return this.jsonValues.remove(o);
+    }
+
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        return this.jsonValues.containsAll(c);
+    }
+
+
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        return this.jsonValues.removeAll(c);
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c) {
+        return this.jsonValues.retainAll(c);
+    }
+
+    @Override
+    public void clear() {
+        this.jsonValues.clear();
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends JsonValue> c) {
+        return jsonValues.addAll(c);
+    }
+
+    @Override
+    public boolean addAll(int index, Collection<? extends JsonValue> c) {
+        return jsonValues.addAll(index, c);
     }
 
     @Override
@@ -57,7 +181,7 @@ public class JsonArray extends JsonValue {
 
             JsonValue item = JsonValue.parse(si, true);
 
-            jsonArray.addJsonValue(item);
+            jsonArray.add(item);
 
             si.skipWhiteSpaces();
 

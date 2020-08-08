@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class JsonParserTest {
     Charset utf8 = StandardCharsets.UTF_8;
-    JsonParser parser = new JsonParser(utf8);
+    JsonConverter parser = new JsonConverter(utf8);
 
     @Test
     void parse_number_array() {
@@ -46,7 +46,7 @@ class JsonParserTest {
             String js = json[i];
 
             if (expected[i]) {
-                assert(parser.parse(js) == JsonTrue.instance);
+                assert(parser.parse(js) == JsonBoolean.trueInstance);
             } else {
                 assertThrows(JsonException.class, () -> parser.parse(js));
             }
@@ -62,7 +62,7 @@ class JsonParserTest {
             String js = json[i];
 
             if (expected[i]) {
-                assert(parser.parse(js) == JsonFalse.instance);
+                assert(parser.parse(js) == JsonBoolean.falseInstance);
             } else {
                 assertThrows(JsonException.class, () -> parser.parse(js));
             }
@@ -154,9 +154,9 @@ class JsonParserTest {
 
         JsonArray ary = parser.parse(json);
 
-        assertEquals(ary.getJsonItem(3), JsonTrue.instance);
-        assertEquals(ary.getJsonItem(4), JsonFalse.instance);
-        assertEquals(ary.getJsonItem(5), JsonNull.instance);
+        assertEquals(ary.get(3), JsonBoolean.trueInstance);
+        assertEquals(ary.get(4), JsonBoolean.falseInstance);
+        assertEquals(ary.get(5), JsonNull.instance);
     }
 
     @Test
@@ -197,6 +197,26 @@ class JsonParserTest {
         try (FileInputStream is = new FileInputStream("../sample/low_size.json")) {
             assertDoesNotThrow(() -> parser.parse(is));
         }
+    }
+
+    @Test
+    void test_compare_two_json_strings() {
+        JsonString json1 = new JsonString("asdasd");
+        JsonString json2 = new JsonString("asdasd");
+        JsonString json3 = new JsonString("asdasd1");
+
+        assertEquals(json1, json2);
+        assertNotEquals(json1, json3);
+        assertNotEquals(json2, json3);
+    }
+
+    @Test
+    void test_compare_two_json_numbers() {
+        JsonArray ary = parser.parse("[1, 1, 1.1, 1.000000000001]");
+
+        assertEquals(ary.get(0), ary.get(1));
+        assertNotEquals(ary.get(2), ary.get(3));
+        assertNotEquals(ary.get(0), ary.get(3));
     }
 
 }

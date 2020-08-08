@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-public class JsonParser {
+public class JsonConverter {
     private final int bufferSize;
     private Charset charset;
     private int pos = 0;
@@ -20,15 +20,15 @@ public class JsonParser {
     /***
      * If it doesn't set a charset, it will set on utf-8. (BUFFER_SIZE will also be set on 512)
      */
-    public JsonParser() {
+    public JsonConverter() {
         this(StandardCharsets.UTF_8, 512);
     }
 
-    public JsonParser(Charset charset) {
+    public JsonConverter(Charset charset) {
         this(charset, 512);
     }
 
-    public JsonParser(Charset charset, int bufferSize) {
+    public JsonConverter(Charset charset, int bufferSize) {
         this.bufferSize = bufferSize;
         this.charset = charset;
     }
@@ -46,4 +46,18 @@ public class JsonParser {
     public <T extends JsonValue> T parse(String str) throws JsonException {
         return (T) JsonValue.parse(new JsonStringIterator(str));
     }
+
+    public <T> T toObject(JsonValue jsonValue) {
+        // JsonNumber > Integer, Double, BigDecimal, Float, Long
+        // JsonString > String
+        // JsonArray > ArrayList<T> or T[]
+        // JsonObject > T
+        // JsonNull > null
+        // JsonBoolean > Boolean (true or false)
+
+        
+
+        return null;
+    }
+
 }

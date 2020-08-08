@@ -1,8 +1,6 @@
 package json.object;
 
 import json.iterator.JsonIterator;
-import json.iterator.JsonStreamIterator;
-import json.iterator.JsonStringIterator;
 import json.exception.JsonException;
 import json.exception.JsonExceptionType;
 
@@ -39,11 +37,11 @@ public abstract class JsonStaticValue extends JsonValue {
                 exceptionType = JsonExceptionType.WRONG_TRUE_FORMAT;
                 break;
             case 't':
-                staticValue = JsonTrue.instance;
+                staticValue = JsonBoolean.trueInstance;
                 exceptionType = JsonExceptionType.WRONG_TRUE_FORMAT;
                 break;
             case 'f':
-                staticValue = JsonFalse.instance;
+                staticValue = JsonBoolean.falseInstance;
                 exceptionType = JsonExceptionType.WRONG_FALSE_FORMAT;
                 break;
             default:

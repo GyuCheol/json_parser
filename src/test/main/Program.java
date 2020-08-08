@@ -1,11 +1,9 @@
 package main;
 
-import json.JsonParser;
+import json.JsonConverter;
 import json.object.JsonArray;
-import json.object.JsonValue;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 
 public class Program {
@@ -13,7 +11,7 @@ public class Program {
 
 
     public static void main(String[] args) throws Exception {
-        JsonParser parser = new JsonParser(StandardCharsets.UTF_8);
+        JsonConverter parser = new JsonConverter(StandardCharsets.UTF_8);
 
 
 

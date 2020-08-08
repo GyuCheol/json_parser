@@ -5,7 +5,7 @@ import json.iterator.JsonStringIterator;
 import json.exception.JsonException;
 import json.exception.JsonExceptionType;
 
-public class JsonString extends JsonValue {
+public class JsonString extends JsonValue implements Comparable<JsonString> {
 
     private String string;
     private String toString;
@@ -107,4 +107,8 @@ public class JsonString extends JsonValue {
         return new JsonString(parseJsonString(si));
     }
 
+    @Override
+    public int compareTo(JsonString o) {
+        return this.string.compareTo(o.string);
+    }
 }
