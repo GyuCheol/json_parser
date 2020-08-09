@@ -62,7 +62,7 @@ public class JsonString extends JsonValue implements Comparable<JsonString> {
         return false;
     }
 
-    public static String parseJsonString(JsonIterator si) {
+    public static JsonString parse(JsonIterator si) {
         StringBuilder sb = new StringBuilder();
 
         boolean isFinished = false;
@@ -99,11 +99,7 @@ public class JsonString extends JsonValue implements Comparable<JsonString> {
 
         si.next();
 
-        return sb.toString();
-    }
-
-    public static JsonString parse(JsonIterator si) {
-        return new JsonString(parseJsonString(si));
+        return new JsonString(sb.toString());
     }
 
     @Override

@@ -30,7 +30,7 @@ class JsonParserTest {
             String js = json[i];
 
             if (expected[i]) {
-                assert(parser.parse(js) == JsonNull.instance);
+                assert(parser.parse(js) == JsonStaticValue.nullInstance);
             } else {
                 assertThrows(JsonException.class, () -> parser.parse(js));
             }
@@ -46,7 +46,7 @@ class JsonParserTest {
             String js = json[i];
 
             if (expected[i]) {
-                assert(parser.parse(js) == JsonBoolean.trueInstance);
+                assert(parser.parse(js) == JsonStaticValue.trueInstance);
             } else {
                 assertThrows(JsonException.class, () -> parser.parse(js));
             }
@@ -62,7 +62,7 @@ class JsonParserTest {
             String js = json[i];
 
             if (expected[i]) {
-                assert(parser.parse(js) == JsonBoolean.falseInstance);
+                assert(parser.parse(js) == JsonStaticValue.falseInstance);
             } else {
                 assertThrows(JsonException.class, () -> parser.parse(js));
             }
@@ -154,9 +154,9 @@ class JsonParserTest {
 
         JsonArray ary = parser.parse(json);
 
-        assertEquals(ary.get(3), JsonBoolean.trueInstance);
-        assertEquals(ary.get(4), JsonBoolean.falseInstance);
-        assertEquals(ary.get(5), JsonNull.instance);
+        assertEquals(ary.get(3), JsonStaticValue.trueInstance);
+        assertEquals(ary.get(4), JsonStaticValue.falseInstance);
+        assertEquals(ary.get(5), JsonStaticValue.nullInstance);
     }
 
     @Test

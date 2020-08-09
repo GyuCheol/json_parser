@@ -11,7 +11,7 @@ public class JsonIOException extends JsonException {
         this.exception = exception;
     }
 
-    public IOException getIOException() {
+    public IOException getException() {
         return this.exception;
     }
 }

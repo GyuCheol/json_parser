@@ -1,16 +1,16 @@
 package json.exception;
 
 public class JsonNumberFormatException extends JsonException {
-    private NumberFormatException ex;
+    private NumberFormatException exception;
 
-    public JsonNumberFormatException(NumberFormatException ex, int pos) {
-        super(String.format("Occurred a wrong number format (%s)", ex.getMessage()), pos);
+    public JsonNumberFormatException(NumberFormatException exception, int pos) {
+        super(String.format("Occurred a wrong number format (%s)", exception.getMessage()), pos);
 
-        this.ex = ex;
+        this.exception = exception;
     }
 
-    public NumberFormatException getNumberFormatException() {
-        return this.ex;
+    public NumberFormatException getException() {
+        return this.exception;
     }
 
 

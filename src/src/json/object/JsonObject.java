@@ -4,18 +4,135 @@ import json.exception.JsonNotFoundSpecificCharException;
 import json.exception.JsonUnknownTokenException;
 import json.iterator.JsonIterator;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
-public class JsonObject extends JsonValue {
+public class JsonObject extends JsonValue implements Map<JsonString, JsonValue> {
     private HashMap<JsonString, JsonValue> properties = new HashMap<>();
 
-
-    public void addJsonProperty(JsonString key, JsonValue value) {
-        properties.put(key, value);
+    @Override
+    public int size() {
+        return properties.size();
     }
 
-    public void removeJsonProperty(JsonString key) {
-        properties.remove(key);
+    @Override
+    public boolean isEmpty() {
+        return properties.isEmpty();
+    }
+
+    @Override
+    public JsonValue get(Object key) {
+        return properties.get(key);
+    }
+
+    @Override
+    public boolean containsKey(Object key) {
+        return properties.containsKey(key);
+    }
+
+    @Override
+    public JsonValue put(JsonString key, JsonValue value) {
+        return properties.put(key, value);
+    }
+
+    @Override
+    public void putAll(Map<? extends JsonString, ? extends JsonValue> m) {
+        properties.putAll(m);
+    }
+
+    @Override
+    public JsonValue remove(Object key) {
+        return properties.remove(key);
+    }
+
+    @Override
+    public void clear() {
+        properties.clear();
+    }
+
+    @Override
+    public boolean containsValue(Object value) {
+        return properties.containsValue(value);
+    }
+
+    @Override
+    public Set<JsonString> keySet() {
+        return properties.keySet();
+    }
+
+    @Override
+    public Collection<JsonValue> values() {
+        return properties.values();
+    }
+
+    @Override
+    public Set<Entry<JsonString, JsonValue>> entrySet() {
+        return properties.entrySet();
+    }
+
+    @Override
+    public JsonValue getOrDefault(Object key, JsonValue defaultValue) {
+        return properties.getOrDefault(key, defaultValue);
+    }
+
+    @Override
+    public JsonValue putIfAbsent(JsonString key, JsonValue value) {
+        return properties.putIfAbsent(key, value);
+    }
+
+    @Override
+    public boolean remove(Object key, Object value) {
+        return properties.remove(key, value);
+    }
+
+    @Override
+    public boolean replace(JsonString key, JsonValue oldValue, JsonValue newValue) {
+        return properties.replace(key, oldValue, newValue);
+    }
+
+    @Override
+    public JsonValue replace(JsonString key, JsonValue value) {
+        return properties.replace(key, value);
+    }
+
+    @Override
+    public JsonValue computeIfAbsent(JsonString key, Function<? super JsonString, ? extends JsonValue> mappingFunction) {
+        return properties.computeIfAbsent(key, mappingFunction);
+    }
+
+    @Override
+    public JsonValue computeIfPresent(JsonString key, BiFunction<? super JsonString, ? super JsonValue, ? extends JsonValue> remappingFunction) {
+        return properties.computeIfPresent(key, remappingFunction);
+    }
+
+    @Override
+    public JsonValue compute(JsonString key, BiFunction<? super JsonString, ? super JsonValue, ? extends JsonValue> remappingFunction) {
+        return properties.compute(key, remappingFunction);
+    }
+
+    @Override
+    public JsonValue merge(JsonString key, JsonValue value, BiFunction<? super JsonValue, ? super JsonValue, ? extends JsonValue> remappingFunction) {
+        return properties.merge(key, value, remappingFunction);
+    }
+
+    @Override
+    public void forEach(BiConsumer<? super JsonString, ? super JsonValue> action) {
+        properties.forEach(action);
+    }
+
+    @Override
+    public void replaceAll(BiFunction<? super JsonString, ? super JsonValue, ? extends JsonValue> function) {
+        properties.replaceAll(function);
+    }
+
+    @Override
+    public Object clone() {
+        return properties.clone();
     }
 
     @Override
@@ -65,7 +182,7 @@ public class JsonObject extends JsonValue {
             // JsonValue 추가
             JsonValue value = JsonValue.parse(si, true);
 
-            jsonObj.addJsonProperty(key, value);
+            jsonObj.put(key, value);
 
             // 추가될 요소가 있는가?
             si.skipWhiteSpaces();
