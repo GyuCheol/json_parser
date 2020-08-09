@@ -4,7 +4,7 @@
 - Language : Java
 - Performance : 
 
-※ reference : https://www.json.org/json-ko.html (just to know the architecture not the logic)
+※ reference : https://www.json.org/json-ko.html (just to know the architecture and the rules to parse that)
 
 - Example
 
