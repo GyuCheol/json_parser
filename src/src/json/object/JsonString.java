@@ -1,9 +1,8 @@
 package json.object;
 
+import json.exception.JsonNotFoundSpecificCharException;
 import json.iterator.JsonIterator;
-import json.iterator.JsonStringIterator;
 import json.exception.JsonException;
-import json.exception.JsonExceptionType;
 
 public class JsonString extends JsonValue implements Comparable<JsonString> {
 
@@ -81,7 +80,7 @@ public class JsonString extends JsonValue implements Comparable<JsonString> {
                     sb.append(si.current());
                     continue;
                 } else {
-                    throw new JsonException(JsonExceptionType.NOT_FINISHED_STRING, si.getPos());
+                    break;
                 }
             }
 
@@ -95,7 +94,7 @@ public class JsonString extends JsonValue implements Comparable<JsonString> {
         }
 
         if (!isFinished) {
-            throw new JsonException(JsonExceptionType.NOT_FINISHED_STRING, si.getPos());
+            throw new JsonNotFoundSpecificCharException(start, si.getPos());
         }
 
         si.next();

@@ -1,9 +1,8 @@
 package json.object;
 
+import json.exception.JsonNotFoundSpecificCharException;
+import json.exception.JsonUnknownTokenException;
 import json.iterator.JsonIterator;
-import json.iterator.JsonStringIterator;
-import json.exception.JsonException;
-import json.exception.JsonExceptionType;
 
 import java.util.HashMap;
 
@@ -60,7 +59,7 @@ public class JsonObject extends JsonValue {
             if (si.current() == ':') {
                 si.next();
             } else {
-                throw new JsonException(JsonExceptionType.NOT_FOUND_COLON, si.getPos());
+                throw new JsonNotFoundSpecificCharException(':', si.getPos());
             }
 
             // JsonValue 추가
@@ -72,7 +71,7 @@ public class JsonObject extends JsonValue {
             si.skipWhiteSpaces();
 
             if (!si.hasNext()) {
-                throw new JsonException(JsonExceptionType.NOT_FINISHED_OBJECT, si.getPos());
+                break;
             }
 
             switch (si.current()) {
@@ -87,12 +86,12 @@ public class JsonObject extends JsonValue {
                     si.skipWhiteSpaces();
                     break;
                 default:
-                    throw new JsonException(JsonExceptionType.UNKNOWN_TOKEN, si.getPos());
+                    throw new JsonUnknownTokenException(si.getPos());
             }
         }
 
         if (!isFinished) {
-            throw new JsonException(JsonExceptionType.NOT_FINISHED_OBJECT, si.getPos());
+            throw new JsonNotFoundSpecificCharException('}', si.getPos());
         }
 
         return jsonObj;

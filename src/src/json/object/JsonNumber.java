@@ -1,9 +1,7 @@
 package json.object;
 
+import json.exception.JsonNumberFormatException;
 import json.iterator.JsonIterator;
-import json.iterator.JsonStringIterator;
-import json.exception.JsonException;
-import json.exception.JsonExceptionType;
 
 import java.math.BigDecimal;
 
@@ -49,7 +47,7 @@ public class JsonNumber extends JsonValue implements Comparable<JsonNumber> {
         try {
             return new JsonNumber(new BigDecimal(sb.toString()));
         } catch (NumberFormatException ex) {
-            throw new JsonException(JsonExceptionType.NUMBER_FORMAT, si.getPos());
+            throw new JsonNumberFormatException(ex, si.getPos());
         }
     }
 

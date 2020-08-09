@@ -1,7 +1,7 @@
 package json;
 
 import json.exception.JsonException;
-import json.exception.JsonExceptionType;
+import json.exception.JsonIOException;
 import json.iterator.JsonStreamIterator;
 import json.iterator.JsonStringIterator;
 import json.object.JsonValue;
@@ -35,11 +35,7 @@ public class JsonConverter {
 
     @SuppressWarnings("unchecked")
     public <T extends JsonValue> T parse(InputStream in) throws JsonException {
-        try {
-            return (T) JsonValue.parse(new JsonStreamIterator(new InputStreamReader(in, charset), bufferSize));
-        } catch (IOException exception) {
-            throw new JsonException(JsonExceptionType.PARSING_IO_EXCEPTION, 0);
-        }
+        return (T) JsonValue.parse(new JsonStreamIterator(new InputStreamReader(in, charset), bufferSize));
     }
 
     @SuppressWarnings("unchecked")

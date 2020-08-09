@@ -1,9 +1,8 @@
 package json.object;
 
+import json.exception.JsonNotFoundSpecificCharException;
+import json.exception.JsonUnknownTokenException;
 import json.iterator.JsonIterator;
-import json.iterator.JsonStringIterator;
-import json.exception.JsonException;
-import json.exception.JsonExceptionType;
 
 import java.util.*;
 import java.util.function.UnaryOperator;
@@ -77,7 +76,12 @@ public class JsonArray extends JsonValue implements List<JsonValue> {
 
     @Override
     public <T> T[] toArray(T[] a) {
-        return this.jsonValues.toArray(a);
+
+        if (a instanceof JsonValue[]) {
+            return this.jsonValues.toArray(a);
+        }
+
+        return a;
     }
 
     @Override
@@ -107,7 +111,12 @@ public class JsonArray extends JsonValue implements List<JsonValue> {
 
     @Override
     public boolean equals(Object o) {
-        return jsonValues.equals(o);
+
+        if (o instanceof JsonArray) {
+            return jsonValues.equals(((JsonArray) o).jsonValues);
+        }
+
+        return false;
     }
 
     @Override
@@ -199,12 +208,12 @@ public class JsonArray extends JsonValue implements List<JsonValue> {
                     isFinished = true;
                     break si_loop;
                 default:
-                    throw new JsonException(JsonExceptionType.UNKNOWN_TOKEN, si.getPos());
+                    throw new JsonUnknownTokenException(si.getPos());
             }
         }
 
         if (!isFinished) {
-            throw new JsonException(JsonExceptionType.NOT_FINISHED_ARRAY, si.getPos());
+            throw new JsonNotFoundSpecificCharException(']', si.getPos());
         }
 
         return jsonArray;

@@ -1,17 +1,16 @@
 package json.exception;
 
-public class JsonException extends RuntimeException {
+public abstract class JsonException extends RuntimeException {
 
-    private JsonExceptionType jsonExceptionType;
+    private int pos;
 
-    public JsonException(JsonExceptionType type, int start) {
-        super(String.format("%s (pos : %d)", type.getMsg(), start));
-
-        this.jsonExceptionType = type;
+    public JsonException(String msg, int pos) {
+        super(String.format("%s, pos : %d", msg, pos));
+        this.pos = pos;
     }
 
-    public JsonExceptionType getJsonExceptionType() {
-        return this.jsonExceptionType;
+    public int getPos() {
+        return this.pos;
     }
 
 }

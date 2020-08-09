@@ -1,8 +1,9 @@
 package json.object;
 
+import json.exception.JsonNotMatchedException;
+import json.exception.JsonUnknownTokenException;
 import json.iterator.JsonIterator;
 import json.exception.JsonException;
-import json.exception.JsonExceptionType;
 
 public abstract class JsonStaticValue extends JsonValue {
 
@@ -29,27 +30,23 @@ public abstract class JsonStaticValue extends JsonValue {
 
     public static JsonStaticValue parse(JsonIterator si) {
         JsonStaticValue staticValue;
-        JsonExceptionType exceptionType;
 
         switch (si.current()) {
             case 'n':
                 staticValue = JsonNull.instance;
-                exceptionType = JsonExceptionType.WRONG_TRUE_FORMAT;
                 break;
             case 't':
                 staticValue = JsonBoolean.trueInstance;
-                exceptionType = JsonExceptionType.WRONG_TRUE_FORMAT;
                 break;
             case 'f':
                 staticValue = JsonBoolean.falseInstance;
-                exceptionType = JsonExceptionType.WRONG_FALSE_FORMAT;
                 break;
             default:
-                throw new JsonException(JsonExceptionType.UNKNOWN_TOKEN, si.getPos());
+                throw new JsonUnknownTokenException(si.getPos());
         }
 
         if (!staticValue.match(si)) {
-            throw new JsonException(exceptionType, si.getPos());
+            throw new JsonNotMatchedException(staticValue.toString(), si.getPos());
         }
 
         return staticValue;

@@ -1,8 +1,8 @@
 package json.object;
 
+import json.exception.JsonUnknownTokenException;
 import json.iterator.JsonIterator;
 import json.exception.JsonException;
-import json.exception.JsonExceptionType;
 
 public abstract class JsonValue {
 
@@ -55,7 +55,7 @@ public abstract class JsonValue {
                 jsonValue = JsonStaticValue.parse(si);
                 break;
             default:
-                throw new JsonException(JsonExceptionType.UNKNOWN_TOKEN, si.getPos());
+                throw new JsonUnknownTokenException(si.getPos());
         }
 
         // obj나 ary에 포함된 요소가 아니라면 다른 token 없이 whitespace로 종결 되어야 한다.
@@ -65,7 +65,7 @@ public abstract class JsonValue {
             if (!si.hasNext()) {
                 return jsonValue;
             } else {
-                throw new JsonException(JsonExceptionType.UNKNOWN_CHAR, si.getPos());
+                throw new JsonUnknownTokenException(si.getPos());
             }
         }
 

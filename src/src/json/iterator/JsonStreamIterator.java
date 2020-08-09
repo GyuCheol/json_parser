@@ -1,7 +1,7 @@
 package json.iterator;
 
 import json.exception.JsonException;
-import json.exception.JsonExceptionType;
+import json.exception.JsonIOException;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,12 +12,10 @@ public class JsonStreamIterator extends JsonIterator {
     private int curLimit;
     private int offset;
 
-    public JsonStreamIterator(InputStreamReader reader, int bufferSize) throws IOException {
+    public JsonStreamIterator(InputStreamReader reader, int bufferSize) {
         this.reader = reader;
         this.buffer = new char[bufferSize];
-        
-        // 최초 1회 로딩
-        this.curLimit = reader.read(buffer, 0, bufferSize);
+        this.curLimit = 0;
     }
 
     @Override
@@ -46,7 +44,7 @@ public class JsonStreamIterator extends JsonIterator {
                     super.pos = 0;
                 }
             } catch (IOException exception) {
-                throw new JsonException(JsonExceptionType.PARSING_IO_EXCEPTION, this.offset + super.pos);
+                throw new JsonIOException(exception, super.pos + this.offset);
             }
         }
 
