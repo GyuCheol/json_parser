@@ -6,7 +6,7 @@
     ※ reference : https://www.json.org/json-ko.html (just to know the architecture and the rules to parse that)
 
 - Features
-    - Providing a stream iterator (It doesn't use lots of momery)
+    - Providing a stream iterator such as memory, network, file etc. (It doesn't use lots of momery)
     - A design for expanding. (highly abstract classes)
     - Supporting for serialization and deserialization. (Json to Java Object, Java Object to Json String)
 
