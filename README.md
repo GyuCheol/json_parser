@@ -3,7 +3,12 @@
 - Purpose : studying to know json architecture and parsing algorithm (without any logical supports but it used standard library like ArrayList)
 - Language : Java
 
-※ reference : https://www.json.org/json-ko.html (just to know the architecture and the rules to parse that)
+    ※ reference : https://www.json.org/json-ko.html (just to know the architecture and the rules to parse that)
+
+- Features
+    - Providing a stream iterator (It doesn't use lots of momery)
+    - A design for expanding. (highly abstract classes)
+    - Supporting for serialization and deserialization. (Json to Java Object, Java Object to Json String)
 
 - Example
 
