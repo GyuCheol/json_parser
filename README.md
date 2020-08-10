@@ -7,7 +7,7 @@
 
 - Features
     - Providing a stream iterator such as memory, network, file etc. (It doesn't use lots of momery)
-    - A design for expanding. (highly abstract classes)
+    - designed for expanding. (highly abstract classes)
     - Supporting for serialization and deserialization. (Json to Java Object, Java Object to Json String)
 
 - Example
