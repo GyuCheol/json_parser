@@ -11,8 +11,8 @@
     - Supporting for serialization and deserialization. (Json to Java Object, Java Object to Json String)
 
 - todo list
-    1] supporting annotations. (for serialization to an object and array types)
-    2] supporting a stream writer. (For now, it just provides a string output)
+    1. supporting annotations. (for serialization to an object and array types)
+    2. supporting a stream writer. (For now, it just provides a string output)
 
 - Example
 
