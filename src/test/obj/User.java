@@ -1,7 +1,7 @@
 package obj;
 
 import json.annotation.JsonProperty;
-import json.annotation.Unserialization;
+import json.annotation.Deserialization;
 
 public class User {
 
@@ -9,7 +9,7 @@ public class User {
     private int id;
     @JsonProperty()
     private String lastName;
-    @Unserialization
+    @Deserialization
     private String firstName;
 
     private int age;
