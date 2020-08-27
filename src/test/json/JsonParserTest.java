@@ -265,6 +265,7 @@ class JsonParserTest {
     @Test
     void test_to_write() {
         JsonObject obj = parser.parse("{'a': 1, 'b': 2}");
+        JsonObject obj2 = new JsonObject();
         StringBuilder sb = new StringBuilder();
 
         try {
@@ -272,11 +273,15 @@ class JsonParserTest {
 
             assertEquals(obj.toString(), sb.toString());
 
+            sb.setLength(0);
+
+            obj2.writeToStream(sb);
+            assertEquals(sb.toString(), "{}");
+            assertEquals(obj2.toString(), "{}");
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
 }

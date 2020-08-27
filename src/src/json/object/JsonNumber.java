@@ -9,8 +9,6 @@ import java.math.BigDecimal;
 public class JsonNumber extends JsonElement implements Comparable<JsonNumber> {
     private BigDecimal decimal;
 
-
-
     public JsonNumber(BigDecimal decimal) {
         this.decimal = decimal;
     }

@@ -16,12 +16,10 @@ public abstract class JsonElement {
     protected abstract void appendStringCache(Appendable appendable) throws IOException;
 
     public void writeToStream(Appendable ps) throws IOException {
-        int hash = hashCode();
-
-        if (lastCachingInfo == hash) {
-            ps.append(strCache);
-        } else {
+        if (strCache == null || lastCachingInfo != hashCode()) {
             appendStringCache(ps);
+        } else {
+            ps.append(strCache);
         }
     }
 
