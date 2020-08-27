@@ -187,14 +187,14 @@ class JsonParserTest {
 
     @Test
     void parse_for_huge_file() throws Exception {
-        try (FileInputStream is = new FileInputStream("../sample/generated.json")) {
+        try (FileInputStream is = new FileInputStream("./sample/generated.json")) {
             assertDoesNotThrow(() -> parser.parse(is));
         }
     }
 
     @Test
     void parse_for_low_file() throws Exception {
-        try (FileInputStream is = new FileInputStream("../sample/low_size.json")) {
+        try (FileInputStream is = new FileInputStream("./sample/low_size.json")) {
             assertDoesNotThrow(() -> parser.parse(is));
         }
     }

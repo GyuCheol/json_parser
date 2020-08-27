@@ -163,11 +163,11 @@ public class JsonArray extends JsonValue implements List<JsonValue> {
 
         for (JsonValue json: jsonValues) {
             sb.append(json.toString());
-            sb.append(", ");
+            sb.append(",");
         }
         
         // 마지막 , 제거
-        sb.setLength(sb.length() - 2);
+        sb.setLength(sb.length() - 1);
         sb.append(']');
 
         return sb.toString();

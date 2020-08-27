@@ -145,8 +145,11 @@ public class JsonObject extends JsonValue implements Map<JsonString, JsonValue> 
             sb.append(k.toString());
             sb.append(": ");
             sb.append(v.toString());
+            sb.append(",");
         });
 
+        // 마지막, 제거
+        sb.setLength(sb.length() - 1);
         sb.append('}');
 
         return sb.toString();
