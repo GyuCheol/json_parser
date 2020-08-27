@@ -7,6 +7,7 @@ import json.exception.JsonException;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 
 public abstract class JsonElement {
     private String strCache = null;
@@ -14,10 +15,10 @@ public abstract class JsonElement {
 
     protected abstract void appendStringCache(Appendable appendable) throws IOException;
 
-    public void writeStringToStream(PrintStream ps) throws IOException {
+    public void writeToStream(Appendable ps) throws IOException {
         int hash = hashCode();
 
-        if (strCache == null || lastCachingInfo != hash) {
+        if (lastCachingInfo == hash) {
             ps.append(strCache);
         } else {
             appendStringCache(ps);

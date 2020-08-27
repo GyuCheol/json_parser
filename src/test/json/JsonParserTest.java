@@ -5,6 +5,7 @@ import json.object.*;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
@@ -259,6 +260,23 @@ class JsonParserTest {
         // 값이 바뀌었으므로 새 string을 만들어야 한다.
         String s4 = obj.toString();
         assert s4 != s3;
+    }
+
+    @Test
+    void test_to_write() {
+        JsonObject obj = parser.parse("{'a': 1, 'b': 2}");
+        StringBuilder sb = new StringBuilder();
+
+        try {
+            obj.writeToStream(sb);
+
+            assertEquals(obj.toString(), sb.toString());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 }
