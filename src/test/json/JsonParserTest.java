@@ -5,7 +5,6 @@ import json.object.*;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileInputStream;
-import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
@@ -31,7 +30,7 @@ class JsonParserTest {
             String js = json[i];
 
             if (expected[i]) {
-                assert(parser.parse(js) == JsonStaticValue.nullInstance);
+                assert(parser.parse(js) == JsonStaticElement.nullInstance);
             } else {
                 assertThrows(JsonException.class, () -> parser.parse(js));
             }
@@ -47,7 +46,7 @@ class JsonParserTest {
             String js = json[i];
 
             if (expected[i]) {
-                assert(parser.parse(js) == JsonStaticValue.trueInstance);
+                assert(parser.parse(js) == JsonStaticElement.trueInstance);
             } else {
                 assertThrows(JsonException.class, () -> parser.parse(js));
             }
@@ -63,7 +62,7 @@ class JsonParserTest {
             String js = json[i];
 
             if (expected[i]) {
-                assert(parser.parse(js) == JsonStaticValue.falseInstance);
+                assert(parser.parse(js) == JsonStaticElement.falseInstance);
             } else {
                 assertThrows(JsonException.class, () -> parser.parse(js));
             }
@@ -155,9 +154,9 @@ class JsonParserTest {
 
         JsonArray ary = parser.parse(json);
 
-        assertEquals(ary.get(3), JsonStaticValue.trueInstance);
-        assertEquals(ary.get(4), JsonStaticValue.falseInstance);
-        assertEquals(ary.get(5), JsonStaticValue.nullInstance);
+        assertEquals(ary.get(3), JsonStaticElement.trueInstance);
+        assertEquals(ary.get(4), JsonStaticElement.falseInstance);
+        assertEquals(ary.get(5), JsonStaticElement.nullInstance);
     }
 
     @Test

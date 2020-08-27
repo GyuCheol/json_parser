@@ -2,7 +2,7 @@ package main;
 
 import json.JsonConverter;
 import json.object.JsonArray;
-import json.object.JsonValue;
+import json.object.JsonElement;
 
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
@@ -15,7 +15,7 @@ public class Program {
         try (FileInputStream is = new FileInputStream("../sample/generated.json")) {
             JsonArray ary = parser.parse(is);
 
-            for (JsonValue value: ary) {
+            for (JsonElement value: ary) {
                 System.out.println(value);
             }
         }

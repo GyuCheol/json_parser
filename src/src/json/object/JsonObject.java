@@ -4,16 +4,14 @@ import json.exception.JsonNotFoundSpecificCharException;
 import json.exception.JsonUnknownTokenException;
 import json.iterator.JsonIterator;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.io.IOException;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class JsonObject extends JsonIterableValue implements Map<JsonString, JsonValue> {
-    private HashMap<JsonString, JsonValue> properties = new HashMap<>();
+public class JsonObject extends JsonElement implements Map<JsonString, JsonElement> {
+    private HashMap<JsonString, JsonElement> properties = new HashMap<>();
 
     @Override
     public int size() {
@@ -26,7 +24,7 @@ public class JsonObject extends JsonIterableValue implements Map<JsonString, Jso
     }
 
     @Override
-    public JsonValue get(Object key) {
+    public JsonElement get(Object key) {
         return properties.get(key);
     }
 
@@ -36,21 +34,21 @@ public class JsonObject extends JsonIterableValue implements Map<JsonString, Jso
     }
 
     @Override
-    public JsonValue put(JsonString key, JsonValue value) {
+    public JsonElement put(JsonString key, JsonElement value) {
         return properties.put(key, value);
     }
 
-    public JsonValue put(String key, JsonValue value) {
+    public JsonElement put(String key, JsonElement value) {
         return properties.put(new JsonString(key), value);
     }
 
     @Override
-    public void putAll(Map<? extends JsonString, ? extends JsonValue> m) {
+    public void putAll(Map<? extends JsonString, ? extends JsonElement> m) {
         properties.putAll(m);
     }
 
     @Override
-    public JsonValue remove(Object key) {
+    public JsonElement remove(Object key) {
         return properties.remove(key);
     }
 
@@ -70,22 +68,22 @@ public class JsonObject extends JsonIterableValue implements Map<JsonString, Jso
     }
 
     @Override
-    public Collection<JsonValue> values() {
+    public Collection<JsonElement> values() {
         return properties.values();
     }
 
     @Override
-    public Set<Entry<JsonString, JsonValue>> entrySet() {
+    public Set<Entry<JsonString, JsonElement>> entrySet() {
         return properties.entrySet();
     }
 
     @Override
-    public JsonValue getOrDefault(Object key, JsonValue defaultValue) {
+    public JsonElement getOrDefault(Object key, JsonElement defaultValue) {
         return properties.getOrDefault(key, defaultValue);
     }
 
     @Override
-    public JsonValue putIfAbsent(JsonString key, JsonValue value) {
+    public JsonElement putIfAbsent(JsonString key, JsonElement value) {
         return properties.putIfAbsent(key, value);
     }
 
@@ -95,42 +93,42 @@ public class JsonObject extends JsonIterableValue implements Map<JsonString, Jso
     }
 
     @Override
-    public boolean replace(JsonString key, JsonValue oldValue, JsonValue newValue) {
+    public boolean replace(JsonString key, JsonElement oldValue, JsonElement newValue) {
         return properties.replace(key, oldValue, newValue);
     }
 
     @Override
-    public JsonValue replace(JsonString key, JsonValue value) {
+    public JsonElement replace(JsonString key, JsonElement value) {
         return properties.replace(key, value);
     }
 
     @Override
-    public JsonValue computeIfAbsent(JsonString key, Function<? super JsonString, ? extends JsonValue> mappingFunction) {
+    public JsonElement computeIfAbsent(JsonString key, Function<? super JsonString, ? extends JsonElement> mappingFunction) {
         return properties.computeIfAbsent(key, mappingFunction);
     }
 
     @Override
-    public JsonValue computeIfPresent(JsonString key, BiFunction<? super JsonString, ? super JsonValue, ? extends JsonValue> remappingFunction) {
+    public JsonElement computeIfPresent(JsonString key, BiFunction<? super JsonString, ? super JsonElement, ? extends JsonElement> remappingFunction) {
         return properties.computeIfPresent(key, remappingFunction);
     }
 
     @Override
-    public JsonValue compute(JsonString key, BiFunction<? super JsonString, ? super JsonValue, ? extends JsonValue> remappingFunction) {
+    public JsonElement compute(JsonString key, BiFunction<? super JsonString, ? super JsonElement, ? extends JsonElement> remappingFunction) {
         return properties.compute(key, remappingFunction);
     }
 
     @Override
-    public JsonValue merge(JsonString key, JsonValue value, BiFunction<? super JsonValue, ? super JsonValue, ? extends JsonValue> remappingFunction) {
+    public JsonElement merge(JsonString key, JsonElement value, BiFunction<? super JsonElement, ? super JsonElement, ? extends JsonElement> remappingFunction) {
         return properties.merge(key, value, remappingFunction);
     }
 
     @Override
-    public void forEach(BiConsumer<? super JsonString, ? super JsonValue> action) {
+    public void forEach(BiConsumer<? super JsonString, ? super JsonElement> action) {
         properties.forEach(action);
     }
 
     @Override
-    public void replaceAll(BiFunction<? super JsonString, ? super JsonValue, ? extends JsonValue> function) {
+    public void replaceAll(BiFunction<? super JsonString, ? super JsonElement, ? extends JsonElement> function) {
         properties.replaceAll(function);
     }
 
@@ -153,25 +151,29 @@ public class JsonObject extends JsonIterableValue implements Map<JsonString, Jso
     }
 
     @Override
-    protected String createStringCache() {
-        StringBuilder sb = new StringBuilder();
+    protected void appendStringCache(Appendable appendable) throws IOException {
+        appendable.append('{');
 
-        sb.append('{');
+        Iterator<Entry<JsonString, JsonElement>> it = properties.entrySet().iterator();
 
-        properties.forEach((k, v) -> {
-            sb.append(k.toString());
-            sb.append(": ");
-            sb.append(v.toString());
-            sb.append(",");
-        });
+        for (int i = 0; i < properties.size() - 1; i++) {
+            Entry<JsonString, JsonElement> entry = it.next();
 
-        // property가 있다면 마지막, 제거
-        if (this.size() > 0) {
-            sb.setLength(sb.length() - 1);
+            entry.getKey().appendStringCache(appendable);
+            appendable.append(':');
+            entry.getValue().appendStringCache(appendable);
+            appendable.append(',');
         }
-        sb.append('}');
 
-        return sb.toString();
+        if (properties.size() > 0) {
+            Entry<JsonString, JsonElement> entry = it.next();
+
+            entry.getKey().appendStringCache(appendable);
+            appendable.append(':');
+            entry.getValue().appendStringCache(appendable);
+        }
+
+        appendable.append('}');
     }
 
     public static JsonObject parse(JsonIterator si) {
@@ -202,7 +204,7 @@ public class JsonObject extends JsonIterableValue implements Map<JsonString, Jso
             }
 
             // JsonValue 추가
-            JsonValue value = JsonValue.parse(si, true);
+            JsonElement value = JsonElement.parse(si, true);
 
             jsonObj.put(key, value);
 

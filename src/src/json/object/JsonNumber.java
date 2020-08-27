@@ -3,21 +3,16 @@ package json.object;
 import json.exception.JsonNumberFormatException;
 import json.iterator.JsonIterator;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 
-public class JsonNumber extends JsonValue implements Comparable<JsonNumber> {
-
+public class JsonNumber extends JsonElement implements Comparable<JsonNumber> {
     private BigDecimal decimal;
-    private String str;
 
-    @Override
-    public String toString() {
-        return str;
-    }
+
 
     public JsonNumber(BigDecimal decimal) {
         this.decimal = decimal;
-        this.str = decimal.toString();
     }
 
     public JsonNumber(String decimal) {
@@ -34,6 +29,11 @@ public class JsonNumber extends JsonValue implements Comparable<JsonNumber> {
 
     public JsonNumber(float value) {
         this(new BigDecimal(value));
+    }
+
+    @Override
+    protected void appendStringCache(Appendable appendable) throws IOException {
+        appendable.append(this.decimal.toString());
     }
 
     public static JsonNumber parse(JsonIterator si) {

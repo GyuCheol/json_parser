@@ -1,12 +1,10 @@
 package json;
 
 import json.exception.JsonException;
-import json.exception.JsonIOException;
 import json.iterator.JsonStreamIterator;
 import json.iterator.JsonStringIterator;
-import json.object.JsonValue;
+import json.object.JsonElement;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
@@ -34,16 +32,16 @@ public class JsonConverter {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends JsonValue> T parse(InputStream in) throws JsonException {
-        return (T) JsonValue.parse(new JsonStreamIterator(new InputStreamReader(in, charset), bufferSize));
+    public <T extends JsonElement> T parse(InputStream in) throws JsonException {
+        return (T) JsonElement.parse(new JsonStreamIterator(new InputStreamReader(in, charset), bufferSize));
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends JsonValue> T parse(String str) throws JsonException {
-        return (T) JsonValue.parse(new JsonStringIterator(str));
+    public <T extends JsonElement> T parse(String str) throws JsonException {
+        return (T) JsonElement.parse(new JsonStringIterator(str));
     }
 
-    public <T> T toObject(JsonValue jsonValue) {
+    public <T> T toObject(JsonElement jsonElement) {
         // JsonNumber > Integer, Double, BigDecimal, Float, Long
         // JsonString > String
         // JsonArray > ArrayList<T> or T[]

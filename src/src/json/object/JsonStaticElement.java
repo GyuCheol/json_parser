@@ -4,15 +4,17 @@ import json.exception.JsonNotMatchedException;
 import json.exception.JsonUnknownTokenException;
 import json.iterator.JsonIterator;
 
-public class JsonStaticValue extends JsonValue {
-    public static final JsonStaticValue nullInstance = new JsonStaticValue("null", null);
-    public static final JsonStaticValue trueInstance = new JsonStaticValue("true", true);
-    public static final JsonStaticValue falseInstance = new JsonStaticValue("false", false);
+import java.io.IOException;
+
+public class JsonStaticElement extends JsonElement {
+    public static final JsonStaticElement nullInstance = new JsonStaticElement("null", null);
+    public static final JsonStaticElement trueInstance = new JsonStaticElement("true", true);
+    public static final JsonStaticElement falseInstance = new JsonStaticElement("false", false);
 
     private String str;
     private Boolean value;
 
-    private JsonStaticValue(String str, Boolean value) {
+    private JsonStaticElement(String str, Boolean value) {
         this.str = str;
         this.value = value;
     }
@@ -46,12 +48,12 @@ public class JsonStaticValue extends JsonValue {
     }
 
     @Override
-    public String toString() {
-        return this.str;
+    protected void appendStringCache(Appendable appendable) throws IOException {
+        appendable.append(this.str);
     }
 
-    public static JsonStaticValue parse(JsonIterator si) {
-        JsonStaticValue staticValue;
+    public static JsonStaticElement parse(JsonIterator si) {
+        JsonStaticElement staticValue;
 
         switch (si.current()) {
             case 'n':

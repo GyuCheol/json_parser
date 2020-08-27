@@ -2,45 +2,15 @@ package json.object;
 
 import json.exception.JsonNotFoundSpecificCharException;
 import json.iterator.JsonIterator;
-import json.exception.JsonException;
 
-public class JsonString extends JsonValue implements Comparable<JsonString> {
+import java.io.IOException;
+import java.io.PrintStream;
 
+public class JsonString extends JsonElement implements Comparable<JsonString> {
     private String string;
-    private String toString;
 
     public JsonString(String string) {
         this.string = string;
-        makeToString();
-    }
-
-    private void makeToString() {
-        StringBuilder sb = new StringBuilder(this.string.length() + 16);
-
-        sb.append('"');
-
-        for (int i = 0; i < this.string.length(); ++i) {
-            char tmp = this.string.charAt(i);
-
-            switch (tmp) {
-                case '"':
-                case '\'':
-                    sb.append('\\');
-                    break;
-            }
-
-            sb.append(tmp);
-
-        }
-
-        sb.append('"');
-
-        this.toString = sb.toString();
-    }
-
-    @Override
-    public String toString() {
-        return this.toString;
     }
 
     public String getString() {
@@ -60,6 +30,27 @@ public class JsonString extends JsonValue implements Comparable<JsonString> {
         }
 
         return false;
+    }
+
+    @Override
+    protected void appendStringCache(Appendable appendable) throws IOException {
+        appendable.append('"');
+
+        for (int i = 0; i < this.string.length(); ++i) {
+            char tmp = this.string.charAt(i);
+
+            switch (tmp) {
+                case '"':
+                case '\'':
+                    appendable.append('\\');
+                    break;
+            }
+
+            appendable.append(tmp);
+
+        }
+
+        appendable.append('"');
     }
 
     public static JsonString parse(JsonIterator si) {
