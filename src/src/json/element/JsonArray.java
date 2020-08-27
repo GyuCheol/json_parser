@@ -1,4 +1,4 @@
-package json.object;
+package json.element;
 
 import json.exception.JsonNotFoundSpecificCharException;
 import json.exception.JsonUnknownTokenException;
@@ -157,11 +157,11 @@ public class JsonArray extends JsonElement implements List<JsonElement> {
     }
 
     @Override
-    protected void appendStringCache(Appendable appendable) throws IOException {
+    protected void appendString(Appendable appendable) throws IOException {
         appendable.append('[');
 
         for (int i = 0; i < jsonElements.size() - 1; i++) {
-            jsonElements.get(i).appendStringCache(appendable);
+            jsonElements.get(i).appendString(appendable);
             appendable.append(",");
         }
 

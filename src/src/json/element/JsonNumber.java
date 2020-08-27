@@ -1,4 +1,4 @@
-package json.object;
+package json.element;
 
 import json.exception.JsonNumberFormatException;
 import json.iterator.JsonIterator;
@@ -30,7 +30,7 @@ public class JsonNumber extends JsonElement implements Comparable<JsonNumber> {
     }
 
     @Override
-    protected void appendStringCache(Appendable appendable) throws IOException {
+    protected void appendString(Appendable appendable) throws IOException {
         appendable.append(this.decimal.toString());
     }
 

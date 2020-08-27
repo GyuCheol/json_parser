@@ -1,7 +1,7 @@
 package json;
 
 import json.exception.JsonException;
-import json.object.*;
+import json.element.*;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileInputStream;

@@ -1,4 +1,4 @@
-package json.object;
+package json.element;
 
 import json.exception.JsonNotMatchedException;
 import json.exception.JsonUnknownTokenException;
@@ -48,7 +48,7 @@ public class JsonStaticElement extends JsonElement {
     }
 
     @Override
-    protected void appendStringCache(Appendable appendable) throws IOException {
+    protected void appendString(Appendable appendable) throws IOException {
         appendable.append(this.str);
     }
 

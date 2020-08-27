@@ -3,7 +3,7 @@ package json;
 import json.exception.JsonException;
 import json.iterator.JsonStreamIterator;
 import json.iterator.JsonStringIterator;
-import json.object.JsonElement;
+import json.element.JsonElement;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -13,7 +13,6 @@ import java.nio.charset.StandardCharsets;
 public class JsonConverter {
     private final int bufferSize;
     private Charset charset;
-    private int pos = 0;
 
     /***
      * If it doesn't set a charset, it will set on utf-8. (BUFFER_SIZE will also be set on 512)
@@ -48,8 +47,6 @@ public class JsonConverter {
         // JsonObject > T
         // JsonNull > null
         // JsonBoolean > Boolean (true or false)
-
-        
 
         return null;
     }

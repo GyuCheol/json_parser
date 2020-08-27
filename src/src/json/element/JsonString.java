@@ -1,10 +1,9 @@
-package json.object;
+package json.element;
 
 import json.exception.JsonNotFoundSpecificCharException;
 import json.iterator.JsonIterator;
 
 import java.io.IOException;
-import java.io.PrintStream;
 
 public class JsonString extends JsonElement implements Comparable<JsonString> {
     private String string;
@@ -33,7 +32,7 @@ public class JsonString extends JsonElement implements Comparable<JsonString> {
     }
 
     @Override
-    protected void appendStringCache(Appendable appendable) throws IOException {
+    protected void appendString(Appendable appendable) throws IOException {
         appendable.append('"');
 
         for (int i = 0; i < this.string.length(); ++i) {

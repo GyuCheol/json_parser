@@ -1,8 +1,8 @@
 package main;
 
 import json.JsonConverter;
-import json.object.JsonArray;
-import json.object.JsonElement;
+import json.element.JsonArray;
+import json.element.JsonElement;
 
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;

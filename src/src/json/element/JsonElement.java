@@ -1,4 +1,4 @@
-package json.object;
+package json.element;
 
 import json.exception.JsonIOException;
 import json.exception.JsonUnknownTokenException;
@@ -6,20 +6,18 @@ import json.iterator.JsonIterator;
 import json.exception.JsonException;
 
 import java.io.IOException;
-import java.io.PrintStream;
-import java.io.PrintWriter;
 
 public abstract class JsonElement {
     private String strCache = null;
     private int lastCachingInfo = 0;
 
-    protected abstract void appendStringCache(Appendable appendable) throws IOException;
+    protected abstract void appendString(Appendable appendable) throws IOException;
 
-    public void writeToStream(Appendable ps) throws IOException {
+    public void writeToStream(Appendable appendable) throws IOException {
         if (strCache == null || lastCachingInfo != hashCode()) {
-            appendStringCache(ps);
+            appendString(appendable);
         } else {
-            ps.append(strCache);
+            appendable.append(strCache);
         }
     }
 
@@ -33,7 +31,7 @@ public abstract class JsonElement {
             lastCachingInfo = hash;
 
             try {
-                appendStringCache(sb);
+                appendString(sb);
                 strCache = sb.toString();
             } catch (IOException e) {
                 throw new JsonIOException(e, -1);

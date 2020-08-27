@@ -1,4 +1,4 @@
-package json.object;
+package json.element;
 
 import json.exception.JsonNotFoundSpecificCharException;
 import json.exception.JsonUnknownTokenException;
@@ -151,7 +151,7 @@ public class JsonObject extends JsonElement implements Map<JsonString, JsonEleme
     }
 
     @Override
-    protected void appendStringCache(Appendable appendable) throws IOException {
+    protected void appendString(Appendable appendable) throws IOException {
         appendable.append('{');
 
         Iterator<Entry<JsonString, JsonElement>> it = properties.entrySet().iterator();
@@ -159,18 +159,18 @@ public class JsonObject extends JsonElement implements Map<JsonString, JsonEleme
         for (int i = 0; i < properties.size() - 1; i++) {
             Entry<JsonString, JsonElement> entry = it.next();
 
-            entry.getKey().appendStringCache(appendable);
+            entry.getKey().appendString(appendable);
             appendable.append(':');
-            entry.getValue().appendStringCache(appendable);
+            entry.getValue().appendString(appendable);
             appendable.append(',');
         }
 
         if (properties.size() > 0) {
             Entry<JsonString, JsonElement> entry = it.next();
 
-            entry.getKey().appendStringCache(appendable);
+            entry.getKey().appendString(appendable);
             appendable.append(':');
-            entry.getValue().appendStringCache(appendable);
+            entry.getValue().appendString(appendable);
         }
 
         appendable.append('}');
