@@ -39,6 +39,12 @@ public class JsonStaticValue extends JsonValue {
         return true;
     }
 
+
+    @Override
+    public int hashCode() {
+        return this.str.hashCode();
+    }
+
     @Override
     public String toString() {
         return this.str;

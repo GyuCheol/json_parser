@@ -20,6 +20,22 @@ public class JsonNumber extends JsonValue implements Comparable<JsonNumber> {
         this.str = decimal.toString();
     }
 
+    public JsonNumber(String decimal) {
+        this(new BigDecimal(decimal));
+    }
+
+    public JsonNumber(int value) {
+        this(new BigDecimal(value));
+    }
+
+    public JsonNumber(double value) {
+        this(new BigDecimal(value));
+    }
+
+    public JsonNumber(float value) {
+        this(new BigDecimal(value));
+    }
+
     public static JsonNumber parse(JsonIterator si) {
         // Number 가능한 포맷
         // 12389123 정수

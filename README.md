@@ -9,6 +9,7 @@
     - Providing a stream iterator such as memory, network, file etc. (It doesn't use lots of momery)
     - designed for expanding. (highly abstract classes)
     - Supporting for serialization and deserialization. (Json to Java Object, Java Object to Json String)
+    - Providing caching string for preventing to waste memory.
 
 - todo list
     1. supporting annotations. (for serialization to an object and array types)

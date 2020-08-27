@@ -12,7 +12,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class JsonObject extends JsonValue implements Map<JsonString, JsonValue> {
+public class JsonObject extends JsonIterableValue implements Map<JsonString, JsonValue> {
     private HashMap<JsonString, JsonValue> properties = new HashMap<>();
 
     @Override
@@ -38,6 +38,10 @@ public class JsonObject extends JsonValue implements Map<JsonString, JsonValue> 
     @Override
     public JsonValue put(JsonString key, JsonValue value) {
         return properties.put(key, value);
+    }
+
+    public JsonValue put(String key, JsonValue value) {
+        return properties.put(new JsonString(key), value);
     }
 
     @Override
@@ -136,7 +140,20 @@ public class JsonObject extends JsonValue implements Map<JsonString, JsonValue> 
     }
 
     @Override
-    public String toString() {
+    public int hashCode() {
+        int hash = 0;
+
+        for (JsonString json: properties.keySet()) {
+            hash += json.hashCode();
+            hash += properties.get(json).hashCode();
+            hash <<= 1;
+        }
+
+        return hash;
+    }
+
+    @Override
+    protected String createStringCache() {
         StringBuilder sb = new StringBuilder();
 
         sb.append('{');
@@ -148,8 +165,10 @@ public class JsonObject extends JsonValue implements Map<JsonString, JsonValue> 
             sb.append(",");
         });
 
-        // 마지막, 제거
-        sb.setLength(sb.length() - 1);
+        // property가 있다면 마지막, 제거
+        if (this.size() > 0) {
+            sb.setLength(sb.length() - 1);
+        }
         sb.append('}');
 
         return sb.toString();

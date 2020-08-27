@@ -5,6 +5,7 @@ import json.object.*;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileInputStream;
+import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
@@ -217,6 +218,48 @@ class JsonParserTest {
         assertEquals(ary.get(0), ary.get(1));
         assertNotEquals(ary.get(2), ary.get(3));
         assertNotEquals(ary.get(0), ary.get(3));
+    }
+
+    @Test
+    void test_to_string_in_array() {
+        JsonArray ary = parser.parse("[1, 2, 1]");
+        String s = ary.toString();
+        String s2 = ary.toString();
+
+        // cache 되므로 레퍼런스가 똑같아야함.
+        assert s == s2;
+
+        ary.clear();
+        ary.add(new JsonNumber(2));
+        ary.add(new JsonNumber(1));
+        ary.add(new JsonNumber(1));
+
+        assertNotEquals(ary.toString(), s);
+    }
+
+    @Test
+    void test_to_string_in_object() {
+        JsonObject obj = parser.parse("{'a': 1, 'b': 2}");
+        String s = obj.toString();
+        String s2 = obj.toString();
+
+        // cache 되므로 레퍼런스가 똑같아야함.
+        assert s == s2;
+
+        obj.clear();
+        obj.put("b", new JsonNumber(2));
+        obj.put("a", new JsonNumber(1));
+
+        String s3 = obj.toString();
+        assert s3 == s2;
+
+        obj.clear();
+        obj.put("b", new JsonNumber(2));
+        obj.put("a", new JsonNumber(2));
+
+        // 값이 바뀌었으므로 새 string을 만들어야 한다.
+        String s4 = obj.toString();
+        assert s4 != s3;
     }
 
 }

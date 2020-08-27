@@ -7,7 +7,7 @@ import json.iterator.JsonIterator;
 import java.util.*;
 import java.util.function.UnaryOperator;
 
-public class JsonArray extends JsonValue implements List<JsonValue> {
+public class JsonArray extends JsonIterableValue implements List<JsonValue> {
     private ArrayList<JsonValue> jsonValues = new ArrayList<>();
 
     @Override
@@ -156,7 +156,7 @@ public class JsonArray extends JsonValue implements List<JsonValue> {
     }
 
     @Override
-    public String toString() {
+    protected String createStringCache() {
         StringBuilder sb = new StringBuilder();
 
         sb.append('[');
@@ -165,12 +165,27 @@ public class JsonArray extends JsonValue implements List<JsonValue> {
             sb.append(json.toString());
             sb.append(",");
         }
-        
-        // 마지막 , 제거
-        sb.setLength(sb.length() - 1);
+
+        // 요소가 있다면 마지막 제거
+        if (this.size() > 0) {
+            sb.setLength(sb.length() - 1);
+        }
+
         sb.append(']');
 
         return sb.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+
+        for (JsonValue json: jsonValues) {
+            hash += json.hashCode();
+            hash <<= 1;
+        }
+
+        return hash;
     }
 
     public static JsonArray parse(JsonIterator si) {
