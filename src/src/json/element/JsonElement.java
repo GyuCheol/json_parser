@@ -9,12 +9,12 @@ import java.io.IOException;
 
 public abstract class JsonElement {
     private String strCache = null;
-    private int lastCachingInfo = 0;
+    protected boolean isRecently = false;
 
     protected abstract void appendString(Appendable appendable) throws IOException;
 
     public void writeToStream(Appendable appendable) throws IOException {
-        if (strCache == null || lastCachingInfo != hashCode()) {
+        if (strCache == null || !isRecently) {
             appendString(appendable);
         } else {
             appendable.append(strCache);
@@ -23,20 +23,17 @@ public abstract class JsonElement {
 
     @Override
     public String toString() {
-        int hash = hashCode();
 
-        if (strCache == null || lastCachingInfo != hash) {
+        if (strCache == null || !isRecently) {
             StringBuilder sb = new StringBuilder();
-
-            lastCachingInfo = hash;
 
             try {
                 appendString(sb);
                 strCache = sb.toString();
+                isRecently = true;
             } catch (IOException e) {
                 throw new JsonIOException(e, -1);
             }
-
         }
 
         return this.strCache;

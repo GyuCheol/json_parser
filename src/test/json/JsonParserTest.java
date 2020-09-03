@@ -250,8 +250,9 @@ class JsonParserTest {
         obj.put("b", new JsonNumber(2));
         obj.put("a", new JsonNumber(1));
 
+        // 새로운 put, remove가 나오면 새로운 레퍼런스
         String s3 = obj.toString();
-        assert s3 == s2;
+        assert s3 != s2;
 
         obj.clear();
         obj.put("b", new JsonNumber(2));
@@ -260,6 +261,30 @@ class JsonParserTest {
         // 값이 바뀌었으므로 새 string을 만들어야 한다.
         String s4 = obj.toString();
         assert s4 != s3;
+    }
+
+    @Test
+    void test_to_string_in_object2() {
+        JsonObject obj = new JsonObject();
+
+        obj.put("A", parser.parse("true"));
+        String s = obj.toString();
+
+        // key가 null이라면, 추가되어선 안됨, cache가 업데이트 되어서도 안됨.
+        obj.put(null, parser.parse("false"));
+        String s2 = obj.toString();
+
+        assert s == s2;
+
+        // 등록안된 key 제거 cache 유지
+        obj.remove("C");
+        String s3 = obj.toString();
+        assert s == s3;
+
+        // 등록된 key 제거 cache 업뎃
+        obj.remove("A");
+        String s4 = obj.toString();
+        assert s != s4;
     }
 
     @Test

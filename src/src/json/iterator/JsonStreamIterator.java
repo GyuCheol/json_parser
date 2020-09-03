@@ -1,6 +1,5 @@
 package json.iterator;
 
-import json.exception.JsonException;
 import json.exception.JsonIOException;
 
 import java.io.IOException;

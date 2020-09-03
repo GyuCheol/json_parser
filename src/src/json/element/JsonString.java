@@ -33,10 +33,14 @@ public class JsonString extends JsonElement implements Comparable<JsonString> {
 
     @Override
     protected void appendString(Appendable appendable) throws IOException {
+        appendString(this.string, appendable);
+    }
+
+    public static void appendString(String str, Appendable appendable) throws IOException {
         appendable.append('"');
 
-        for (int i = 0; i < this.string.length(); ++i) {
-            char tmp = this.string.charAt(i);
+        for (int i = 0; i < str.length(); ++i) {
+            char tmp = str.charAt(i);
 
             switch (tmp) {
                 case '"':
