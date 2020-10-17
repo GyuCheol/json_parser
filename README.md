@@ -30,4 +30,4 @@ try (FileInputStream is = new FileInputStream("../sample/generated.json")) {
 ```
 
 - Class Design
-<img src="./img/diagram.jpg"/>
+<img src="./img/diagram.png"/>
